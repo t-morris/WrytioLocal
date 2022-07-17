@@ -1,3 +1,5 @@
+
+
 /*Script to auto calculate the words per day for the Add project modal.
 Collect information from modal form and calculate words per day based
 on remaining words/number of days. Note: dates are collected from field's \
@@ -36,6 +38,84 @@ function resetAddProjectForm(){
 }
 
 let projects = [];
+let storedProjects =[];
+
+function importProjectsJson(){
+  if (storedProjects.length == 0){
+  projects = [{
+    "id":1,
+    "name":"Test_Project1",
+    "start_date":"2020-03-09",
+    "deadline":"2023-02-09",
+    "initial_word_count":5000,
+    "goal_word_count":50000,
+    "work_entries":[
+        {
+            "id":1,
+            "project":"Test_Project1",
+            "date":"2022-07-06",
+            "words_written":1000,
+            "comment":"comment"
+        },
+        {
+            "id":2,
+            "project":"Test_Project1",
+            "date":"2022-07-08",
+            "words_written":1688,
+            "comment":"comment"
+        },
+        {
+            "id":3,
+            "project":"Test_Project1",
+            "date":"2022-07-09",
+            "words_written":2000,
+            "comment":"comment"
+        },
+        {
+            "id":4,
+            "project":"Test_Project1",
+            "date":"2022-07-10",
+            "words_written":10,
+            "comment":"comment"
+        },
+        {
+            "id":5,
+            "project":"Test_Project1",
+            "date":"2022-07-11",
+            "words_written":660,
+            "comment":"comment"
+        },
+        {
+            "id":6,
+            "project":"Test_Project1",
+            "date":"2022-07-12",
+            "words_written":1400,
+            "comment":"comment"
+        }
+    ]},
+    {
+    "id":2,
+    "name":"Test_Project2",
+    "start_date":"2020-03-09",
+    "deadline":"2023-02-09",
+    "initial_word_count":100,
+    "goal_word_count":100000,
+    "work_entries":[
+        {
+            "id":7,
+            "project":"Test_Project2",
+            "date":"2022-07-09",
+            "words_written":1000,
+            "comment":"comment"
+            }
+    ]
+    }]
+  } else {
+    projects = storedProjects;
+  }
+  //projects.forEach(addProject);
+  console.log(projects);
+}
 
 /**
  * Remove all projects on the page added by addProject().
@@ -214,15 +294,70 @@ function addProject(project) {
   drawWordCountGraph($("#overall-activity")[0], allWorkEntries, null);
 }
 
+/**
 function reloadProjects() {
   return $.ajax({"url": "/api/projects"}).then(projects => {
     clearProjects();
-
+    
     // Add new cards.
     projects.forEach(addProject);
   });
 }
+*/
 
+function findNewId(projects){
+  let newID = 1;
+  projects.forEach(entry => {
+    if (entry.id > newID){
+      newID = entry.id;
+    }
+  })
+  newID++;
+  return newID;
+}
+
+function reloadProjects() {
+  storedProjects = projects;
+  clearProjects();
+  importProjectsJson();
+  //return $.ajax({"url": "/api/projects"}).then(projects => {
+  //storedProjects = projects;
+  //clearProjects();
+  //projects = storedProjects;
+  // Add new cards.
+  projects.forEach(addProject);
+  console.log("Loaded Projects");
+  console.log(projects);
+  //});
+}
+
+$("#apModalForm").on("submit", () => {
+  // console.log(JSON.stringify({
+  //   "id": findNewId(projects),
+  //   "name": $("#apTitleInput").val(),
+  //   "start_date": $("#apStartDateInput").val(),
+  //   "deadline": $("#apDeadlineInput").val(),
+  //   "initial_word_count": $("#apCurrentWCInput").val(),
+  //   "goal_word_count": $("#apGoalInput").val(),
+  //   "work_entries":[],
+  // }));
+  projects.push({
+    "id": findNewId(projects),
+    "name": $("#apTitleInput").val(),
+    "start_date": $("#apStartDateInput").val(),
+    "deadline": $("#apDeadlineInput").val(),
+    "initial_word_count": $("#apCurrentWCInput").val(),
+    "goal_word_count": $("#apGoalInput").val(),
+    "work_entries":[],
+  });
+  $("#addProject").modal("hide");
+  reloadProjects();
+  // Prevent page reload.
+  return false;
+});
+  
+
+/** 
 // Load the project list from the API.
 $(() => {
   reloadProjects();
@@ -252,10 +387,33 @@ $("#apModalForm").on("submit", () => {
   // Prevent page reload.
   return false;
 });
+*/
 
 // Clear the add update form whenever the modal is hidden.
 $("#addUpdate").on("hidden.bs.modal", () => $("#auModalForm")[0].reset());
 
+// Set a submit handler for the add update modal.
+$("#auModalForm").on("submit", () => {
+  let projectID = parseInt($("#auProjectSelect").val());
+
+  if (projectID == -1) {
+    $("#addProjectError")
+      .text(`Failed to log work: No project selected`)
+      .css("display", "block");
+  }
+  projects.projectID.val().work_entries.push(JSON.stringify({
+    "id": $(projectID).val(),
+    "project":projects.projectID.val().name,
+    "date": $("#auDateInput").val(),
+    "words_written": $("#auWordsWritten").val(),
+    "comment": $("#auCommentsInput").val(),
+  }));
+  $("#addUpdate").modal("hide");
+  // Prevent page reload.
+  return false;
+});
+
+/**
 // Set a submit handler for the add project modal.
 $("#auModalForm").on("submit", () => {
   let projectID = parseInt($("#auProjectSelect").val());
@@ -286,6 +444,7 @@ $("#auModalForm").on("submit", () => {
   // Prevent page reload.
   return false;
 });
+*/
 
 let charts = new Map();
 
@@ -475,12 +634,13 @@ function drawWordCountGraph(element, workEntries, project) {
   charts.set(element, myChart);
 }
 
-$("#exportData").on("click", () => {
+$("#1exportData").on("click", () => {
   reloadProjects().then(() => {
     // Based on code from here: https://robkendal.co.uk/blog/2020-04-17-saving-text-to-client-side-file-using-vanilla-js
-
+    
     // Create blob which contains the JSON file.
     const projectJson = JSON.stringify(projects);
+    console.log(projects);
     const file = new Blob([projectJson], {type: "application/json"});
 
     // Build a fake link tag and "click" it.
@@ -504,4 +664,15 @@ $("#exportData").on("click", () => {
     `);
     $("#main-error .error-text").text("Failed to generate export data.");
   });
+});
+
+$("#exportData").on("click", () => {
+  importProjectsJson();
+  //reloadProjects();
+  //console.log(projects);
+  // projects.forEach(entry => {
+  //   console.log(entry.id);
+  //   console.log(entry.work_entries);
+  //})
+
 });
