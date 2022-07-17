@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/darkly/bootstrap.min.css" 
+    integrity="sha384-nNK9n28pDUDDgIiIqZ/MiyO3F4/9vsMtReZK39klb/MtkZI3/LtjSjlmyVPS3KdN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css"
+      integrity="sha512-/zs32ZEJh+/EO2N1b0PEdoA10JkdC3zJ8L5FTiQu82LR9S/rOQNfQN7U59U9BC12swNeRAz3HSzIL2vpp4fv3w=="
+      crossorigin="anonymous" />
+    <link rel="stylesheet" href="projects.css" /> 
+    <script src="https://kit.fontawesome.com/f07f77cac5.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"
+      integrity="sha512-vBmx0N/uQOXznm/Nbkp7h0P1RfLSj0HQrFSzV8m7rOGyj30fYAOKHYvCNez+yM8IrfnW0TCodDEjRqf6fodf/Q=="
+      crossorigin="anonymous">
+    </script>
+    <title>Wryt.io - Projects</title>
+  </head>
+
+  <body>
+    <nav class="navbar sticky-top navbar-dark bg-success">
+      <a class="navbar-brand dark" href="#"><i class="fa fa-pencil-square" aria-hidden="true"></i> Wryt.io</a>
+      <div class="btn-group" role="group" aria-label="Basic example">
+        <button type="button" class="btn btn-secondary" title="Add Project" data-toggle="modal" data-target="#addProject" onclick="resetAddProjectForm()">
+          <i class="fa fa-plus-circle" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="btn btn-secondary" title="Log Work" data-toggle="modal" data-target="#addUpdate">
+          <i class="fa fa-calendar-plus-o" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="btn btn-secondary" id="exportData" title="Export Data">
+          <i class="fa fa-download" aria-hidden="true"></i>
+        </button>
+      </div>
+    </nav>
+    <div class="container mt-4">
+      <!-- Row for Avg Graph-->
+      <div class="row row-cols-12">
+        <div class="col">
+          <div id="main-error">
+          </div>
+        </div>
+      </div>
+      <div class="row row-cols-12">
+        <div class="col mb-4">
+          <div class="card">
+            <div class="card-header text-center text-success"><h4>Cross-Project Count</h4></div>
+            <canvas id="overall-activity" class="chart"></canvas>
+            <div class="card-body text-center">
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Row for Project Cards-->
+      <div class="row row-cols-3" id="project-container"></div>
+    </div>
+    <!-- addUpdate Modal -->
+    <div class="modal fade" id="addUpdate" tabindex="-1" role="dialog" aria-labelledby="addUpdate" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <form id="auModalForm">
+            <div class="modal-header">
+              <h5 class="modal-title" id="addUpdate">Add Update</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div id="addUpdateError" role="alert" class="alert alert-danger" style="display: none;"></div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+                </div>
+                <input type="date" class="form-control" placeholder="date" aria-label="date" aria-describedby="basic-addon2"
+                  id="auDateInput" required>
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="inputGroupSelect01">Project</label>
+                </div>
+                <select class="custom-select" id="auProjectSelect" required>
+                  <option disabled selected>Select project...</option>
+                </select>
+              </div>
+    
+              <div class="input-group mb-3">
+                <input type="number" class="form-control" placeholder="Words written" aria-label="Words written"
+                  aria-describedby="basic-addon2" id="auWordsWritten" min="1" required>
+                <div class="input-group-append">
+                  <span class="input-group-text">Words</span>
+                </div>
+              </div>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Comments</span>
+                </div>
+                <textarea class="form-control" aria-label="With textarea" id="auCommentsInput"></textarea>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+              <input type="submit" class="btn btn-success" id="auSaveUpdate" value="Save"/>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- addProject Modal -->
+    <div class="modal fade" id="addProject" tabindex="-1" role="dialog" aria-labelledby="addUpdate" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addProject">Add Project</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form id="apModalForm">
+            <div class="modal-body">
+              <div id="addProjectError" role="alert" class="alert alert-danger" style="display: none;"></div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Title:</span>
+                </div>
+                <input type="text" class="form-control" placeholder="The book with no name..." aria-label="date"
+                  aria-describedby="basic-addon2" id="apTitleInput">
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Start Date:</span>
+                </div>
+                <input type="date" class="form-control" placeholder="Default is today." aria-label="date"
+                  aria-describedby="basic-addon2" id="apStartDateInput" onchange="updateEstimate()">
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Deadline:</span>
+                </div>
+                <input type="date" class="form-control" placeholder="date" aria-label="date"
+                  aria-describedby="basic-addon2" id="apDeadlineInput" onchange="updateEstimate()">
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Word Goal:</span>
+                </div>
+                <input type="number" class="form-control" placeholder="" aria-label="date" aria-describedby="basic-addon2"
+                  id="apGoalInput" onchange="updateEstimate()">
+                <div class="input-group-append">
+                  <span class="input-group-text">Words</span>
+                </div>
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Current Wordcount:</span>
+                </div>
+                <input type="number" class="form-control" placeholder="If you've already started..." aria-label="date"
+                  aria-describedby="basic-addon2" id="apCurrentWCInput" onchange="updateEstimate()">
+                <div class="input-group-append">
+                  <span class="input-group-text">Words</span>
+                </div>
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text bg-dark text-white">Words per day to finish:</span>
+                </div>
+                <input type="text" class="form-control" placeholder="" aria-label="date" aria-describedby="basic-addon2"
+                  id="apWPDOutput" disabled>
+                <div class="input-group-append">
+                  <span class="input-group-text bg-dark text-white">Words</span>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+              <input type="submit" class="btn btn-success" id="auSaveUpdate" value="Save"/>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- Open project modal placeholder. -->
+    <div id="openprojectmodal"></div>
+    
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+      integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+      crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js"
+      integrity="sha512-/n/dTQBO8lHzqqgAQvy0ukBQ0qLmGzxKhn8xKrz4cn7XJkZzy+fAtzjnOQd5w55h4k1kUC+8oIe6WmrGUYwODA=="
+      crossorigin="anonymous"></script>
+    <script src="clientscripts.js"></script>
+  </body>
+
+</html>
