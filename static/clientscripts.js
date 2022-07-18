@@ -306,17 +306,6 @@ function addProject(project) {
   drawWordCountGraph($("#overall-activity")[0], allWorkEntries, null);
 }
 
-/**
-function reloadProjects() {
-  return $.ajax({"url": "/api/projects"}).then(projects => {
-    clearProjects();
-    
-    // Add new cards.
-    projects.forEach(addProject);
-  });
-}
-*/
-
 function findNewId(projects){
   let newID = 1;
   projects.forEach(entry => {
@@ -352,39 +341,6 @@ $("#apModalForm").on("submit", () => {
   // Prevent page reload.
   return false;
 });
-  
-
-/** 
-// Load the project list from the API.
-$(() => {
-  reloadProjects();
-});
-
-// Set a submit handler for the add project modal.
-$("#apModalForm").on("submit", () => {
-  $.ajax({
-    "url": "/api/projects/",
-    "method": "POST",
-    "contentType": "application/json",
-    "data": JSON.stringify({
-      "name": $("#apTitleInput").val(),
-      "start_date": $("#apStartDateInput").val(),
-      "deadline": $("#apDeadlineInput").val(),
-      "initial_word_count": $("#apCurrentWCInput").val(),
-      "goal_word_count": $("#apGoalInput").val(),
-    })
-  }).then(addProject).then(() => {
-    $("#addProject").modal("hide");
-  }).catch((request, textStatus, errorThrown) => {
-    $("#addProjectError")
-      .text(`Failed to create project: ${errorThrown}`)
-      .css("display", "block");
-  });
-
-  // Prevent page reload.
-  return false;
-});
-*/
 
 // Clear the add update form whenever the modal is hidden.
 $("#addUpdate").on("hidden.bs.modal", () => $("#auModalForm")[0].reset());
@@ -410,39 +366,6 @@ $("#auModalForm").on("submit", () => {
   // Prevent page reload.
   return false;
 });
-
-/**
-// Set a submit handler for the add project modal.
-$("#auModalForm").on("submit", () => {
-  let projectID = parseInt($("#auProjectSelect").val());
-
-  if (projectID == -1) {
-    $("#addProjectError")
-      .text(`Failed to log work: No project selected`)
-      .css("display", "block");
-  }
-
-  $.ajax({
-    "url": `/api/projects/${projectID}/work-entries/`,
-    "method": "POST",
-    "contentType": "application/json",
-    "data": JSON.stringify({
-      "date": $("#auDateInput").val(),
-      "words_written": $("#auWordsWritten").val(),
-      "comment": $("#auCommentsInput").val(),
-    })
-  }).then(() => {
-    $("#addUpdate").modal("hide");
-  }).catch((request, textStatus, errorThrown) => {
-    $("#addUpdateError")
-      .text(`Failed to add update: ${errorThrown}`)
-      .css("display", "block");
-  });
-
-  // Prevent page reload.
-  return false;
-});
-*/
 
 let charts = new Map();
 
