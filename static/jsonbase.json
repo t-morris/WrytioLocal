@@ -1,5 +1,5 @@
 {   
-    "id":1,
+    "id":0,
     "name":"Test_Project1",
     "start_date":"2020-03-09",
     "deadline":"2023-02-09",
@@ -7,7 +7,7 @@
     "goal_word_count":50000,
     "work_entries":[
         {
-            "id":1,
+            "id":0,
             "project":"Test_Project1",
             "date":"2022-07-06",
             "words_written":1000,
@@ -51,7 +51,7 @@
     ]
 },
 {
-    "id":2,
+    "id":1,
     "name":"Test_Project2",
     "start_date":"2020-03-09",
     "deadline":"2023-02-09",
@@ -66,4 +66,13 @@
             "comment":"comment"
             }
     ]
+},
+{
+  "id":2,
+  "name":"Test_Project3",
+  "start_date":"2020-03-09",
+  "deadline":"2023-02-09",
+  "initial_word_count":100,
+  "goal_word_count":100000,
+  "work_entries": []
 }

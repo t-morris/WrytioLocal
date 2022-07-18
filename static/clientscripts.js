@@ -42,8 +42,8 @@ let storedProjects =[];
 
 function importProjectsJson(){
   if (storedProjects.length == 0){
-  projects = [{
-    "id":1,
+  projects = [{   
+    "id":0,
     "name":"Test_Project1",
     "start_date":"2020-03-09",
     "deadline":"2023-02-09",
@@ -51,7 +51,7 @@ function importProjectsJson(){
     "goal_word_count":50000,
     "work_entries":[
         {
-            "id":1,
+            "id":0,
             "project":"Test_Project1",
             "date":"2022-07-06",
             "words_written":1000,
@@ -92,9 +92,10 @@ function importProjectsJson(){
             "words_written":1400,
             "comment":"comment"
         }
-    ]},
-    {
-    "id":2,
+    ]
+},
+{
+    "id":1,
     "name":"Test_Project2",
     "start_date":"2020-03-09",
     "deadline":"2023-02-09",
@@ -109,7 +110,16 @@ function importProjectsJson(){
             "comment":"comment"
             }
     ]
-    }]
+},
+{
+  "id":2,
+  "name":"Test_Project3",
+  "start_date":"2020-03-09",
+  "deadline":"2023-02-09",
+  "initial_word_count":100,
+  "goal_word_count":100000,
+  "work_entries": []
+}]
   } else {
     projects = storedProjects;
   }
@@ -129,6 +139,9 @@ function clearProjects() {
 function primaryProjectStatsCalculation(project){
   let workEntryWords = project.work_entries.map(entry => entry.words_written).reduce((a, b) => a + b, 0);
   let currentWords = project.initial_word_count + workEntryWords;
+  console.log("initial:" + project.initial_word_count + ", workentrytotal:" + workEntryWords + ", current:" + currentWords);
+  console.log(typeof(workEntryWords));
+  console.log(typeof(project.initial_word_count));
   let totalWords = project.goal_word_count;
   let progress = Math.floor((100 * currentWords) / totalWords);
   return {workEntryWords: workEntryWords, currentWords: currentWords, totalWords: totalWords, progress: progress};
@@ -244,7 +257,7 @@ function populateOpenProject(project) {
  */
 function addProject(project) {
   // Add this project to the global list.
-  projects.push(project);
+  //projects.push(project);
 
   // Start with a card template.
   let card = $(`<div class="col col-12 col-md-6 col-lg-4 mb-4">
@@ -267,7 +280,6 @@ function addProject(project) {
     </div>`);
   // Add card title.
   card.find(".card-title").text(project.name);
-
 
   // Add word count progress
   let projectStats = primaryProjectStatsCalculation(project);
@@ -320,34 +332,19 @@ function reloadProjects() {
   storedProjects = projects;
   clearProjects();
   importProjectsJson();
-  //return $.ajax({"url": "/api/projects"}).then(projects => {
-  //storedProjects = projects;
-  //clearProjects();
-  //projects = storedProjects;
   // Add new cards.
   projects.forEach(addProject);
-  console.log("Loaded Projects");
-  console.log(projects);
   //});
 }
 
 $("#apModalForm").on("submit", () => {
-  // console.log(JSON.stringify({
-  //   "id": findNewId(projects),
-  //   "name": $("#apTitleInput").val(),
-  //   "start_date": $("#apStartDateInput").val(),
-  //   "deadline": $("#apDeadlineInput").val(),
-  //   "initial_word_count": $("#apCurrentWCInput").val(),
-  //   "goal_word_count": $("#apGoalInput").val(),
-  //   "work_entries":[],
-  // }));
   projects.push({
     "id": findNewId(projects),
     "name": $("#apTitleInput").val(),
     "start_date": $("#apStartDateInput").val(),
     "deadline": $("#apDeadlineInput").val(),
-    "initial_word_count": $("#apCurrentWCInput").val(),
-    "goal_word_count": $("#apGoalInput").val(),
+    "initial_word_count": parseInt($("#apCurrentWCInput").val()),
+    "goal_word_count": parseInt($("#apGoalInput").val()),
     "work_entries":[],
   });
   $("#addProject").modal("hide");
@@ -401,14 +398,15 @@ $("#auModalForm").on("submit", () => {
       .text(`Failed to log work: No project selected`)
       .css("display", "block");
   }
-  projects.projectID.val().work_entries.push(JSON.stringify({
-    "id": $(projectID).val(),
-    "project":projects.projectID.val().name,
+  projects[projectID].work_entries.push({
+    "id": findNewId(projects[projectID].work_entries),
+    "project": projects[projectID].name,
     "date": $("#auDateInput").val(),
-    "words_written": $("#auWordsWritten").val(),
+    "words_written": parseInt($("#auWordsWritten").val()),
     "comment": $("#auCommentsInput").val(),
-  }));
+  });
   $("#addUpdate").modal("hide");
+  reloadProjects();
   // Prevent page reload.
   return false;
 });
@@ -545,7 +543,7 @@ function drawWordCountGraph(element, workEntries, project) {
         }
       });
     });
-    console.log(count4AvgTotal);
+    //console.log(count4AvgTotal);
     let averageDaily = count4AvgTotal/30;
     averageData.set(currentDay, averageDaily);
     averageData.set(currNeg30, averageDaily);
@@ -634,15 +632,14 @@ function drawWordCountGraph(element, workEntries, project) {
   charts.set(element, myChart);
 }
 
-$("#1exportData").on("click", () => {
-  reloadProjects().then(() => {
+$("#exportData").on("click", () => {
+  try{
+    reloadProjects();
     // Based on code from here: https://robkendal.co.uk/blog/2020-04-17-saving-text-to-client-side-file-using-vanilla-js
-    
     // Create blob which contains the JSON file.
     const projectJson = JSON.stringify(projects);
-    console.log(projects);
+    console.log(projectJson);
     const file = new Blob([projectJson], {type: "application/json"});
-
     // Build a fake link tag and "click" it.
     const a = document.createElement('a');
     a.href = URL.createObjectURL(file);
@@ -650,10 +647,10 @@ $("#1exportData").on("click", () => {
     const dateStr = now.toString("yyyyMMddHHmmss") 
     a.download = `wrytio-data-${dateStr}.json`;
     a.click();
-
     // Clean up the object to save memory
     URL.revokeObjectURL(a.href);
-  }).catch(() => {
+  }catch{
+    //Throw error if above code block fails.
     $("#main-error").html(`
       <div class="alert alert-danger alert-dismissible" role="alert">
         <div class="error-text"></div>
@@ -663,16 +660,10 @@ $("#1exportData").on("click", () => {
       </div>
     `);
     $("#main-error .error-text").text("Failed to generate export data.");
-  });
+  }
 });
 
-$("#exportData").on("click", () => {
+$("#importData").on("click", () => {
   importProjectsJson();
-  //reloadProjects();
-  //console.log(projects);
-  // projects.forEach(entry => {
-  //   console.log(entry.id);
-  //   console.log(entry.work_entries);
-  //})
-
+  reloadProjects();
 });
