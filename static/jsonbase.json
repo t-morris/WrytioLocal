@@ -1,4 +1,4 @@
-{   
+    [{   
     "id":0,
     "name":"Test_Project1",
     "start_date":"2020-03-09",
@@ -69,10 +69,10 @@
 },
 {
   "id":2,
-  "name":"Test_Project3",
+  "name":"Test_Project_Hank",
   "start_date":"2020-03-09",
   "deadline":"2023-02-09",
   "initial_word_count":100,
   "goal_word_count":100000,
   "work_entries": []
-}
+}]

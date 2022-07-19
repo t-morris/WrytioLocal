@@ -24,7 +24,7 @@
     <nav class="navbar sticky-top navbar-dark bg-success">
       <a class="navbar-brand dark" href="#"><i class="fa fa-pencil-square" aria-hidden="true"></i> Wryt.io</a>
       <div class="btn-group" role="group" aria-label="Basic example">
-        <button type="button" class="btn btn-secondary" id="importData" title="Import Data">
+        <button type="button" class="btn btn-secondary" title="Import Data" data-toggle="modal" data-target="#openJsonFile">
           <i class="fa fa-upload" aria-hidden="true"></i>
         </button>
         <button type="button" class="btn btn-secondary" title="Add Project" data-toggle="modal" data-target="#addProject" onclick="resetAddProjectForm()">
@@ -186,6 +186,38 @@
     <!-- Open project modal placeholder. -->
     <div id="openprojectmodal"></div>
     
+    <!--file open modal-->
+    <div class="modal fade" id="openJsonFile" tabindex="-1" role="dialog" aria-labelledby="openJsonFile" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <form id="openJsonFileForm">
+            <div class="modal-header">
+              <h5 class="modal-title" id="openJsonFile">Open File</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div id="addUpdateError" role="alert" class="alert alert-danger" style="display: none;"></div>
+
+              <div class="input-group mb-3">
+                <input type="file" class="form-control" placeholder="File to open..." aria-label="File to open..."
+                  aria-describedby="basic-addon2" id="ojfFilePath" min="1" required>
+                <!--<div class="input-group-append">
+                  <button type="button" class="btn btn-success">Browse</button>
+                </div>-->
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+              <input type="submit" class="btn btn-success" id="ojfOpen" value="Open"/>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"

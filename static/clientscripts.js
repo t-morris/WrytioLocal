@@ -320,7 +320,7 @@ function findNewId(projects){
 function reloadProjects() {
   storedProjects = projects;
   clearProjects();
-  importProjectsJson();
+  //importProjectsJson();
   // Add new cards.
   projects.forEach(addProject);
   //});
@@ -344,6 +344,9 @@ $("#apModalForm").on("submit", () => {
 
 // Clear the add update form whenever the modal is hidden.
 $("#addUpdate").on("hidden.bs.modal", () => $("#auModalForm")[0].reset());
+
+// Clear the add update form whenever the modal is hidden.
+$("#openJsonFile").on("hidden.bs.modal", () => $("#openJsonFile")[0].reset());
 
 // Set a submit handler for the add update modal.
 $("#auModalForm").on("submit", () => {
@@ -586,7 +589,25 @@ $("#exportData").on("click", () => {
   }
 });
 
-$("#importData").on("click", () => {
-  importProjectsJson();
+$("#openJsonFile").on("submit", () => {
+  //console.log("Attempting open file");
+  //console.log(document.getElementById("ojfFilePath").files[0]);
+  //document.getElementById("ojfFilePath").addEventListener("change", function() {
+    var file_to_read = document.getElementById("ojfFilePath").files[0];
+    var fileread = new FileReader();
+    fileread.onload = function(e) {
+      var content = e.target.result;
+      //console.log(JSON.parse(content));
+      projects = JSON.parse(content); // Array of Objects.
+      //console.log(intern); // You can index every object
+      //projects = intern;
+      console.log(projects);
+      
+    };
+    fileread.readAsText(file_to_read);
+  //});
+  //console.log("Attempt done.");
+  //importProjectsJson();
   reloadProjects();
+  
 });
