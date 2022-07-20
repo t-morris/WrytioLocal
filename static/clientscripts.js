@@ -1,5 +1,3 @@
-
-
 /*Script to auto calculate the words per day for the Add project modal.
 Collect information from modal form and calculate words per day based
 on remaining words/number of days. Note: dates are collected from field's \
@@ -40,91 +38,10 @@ function resetAddProjectForm(){
 let projects = [];
 let storedProjects =[];
 
-function importProjectsJson(){
-  if (storedProjects.length == 0){
-  projects = [{   
-    "id":0,
-    "name":"Test_Project1",
-    "start_date":"2020-03-09",
-    "deadline":"2023-02-09",
-    "initial_word_count":5000,
-    "goal_word_count":50000,
-    "work_entries":[
-        {
-            "id":0,
-            "project":"Test_Project1",
-            "date":"2022-07-06",
-            "words_written":1000,
-            "comment":"comment"
-        },
-        {
-            "id":2,
-            "project":"Test_Project1",
-            "date":"2022-07-08",
-            "words_written":1688,
-            "comment":"comment"
-        },
-        {
-            "id":3,
-            "project":"Test_Project1",
-            "date":"2022-07-09",
-            "words_written":2000,
-            "comment":"comment"
-        },
-        {
-            "id":4,
-            "project":"Test_Project1",
-            "date":"2022-07-10",
-            "words_written":10,
-            "comment":"comment"
-        },
-        {
-            "id":5,
-            "project":"Test_Project1",
-            "date":"2022-07-11",
-            "words_written":660,
-            "comment":"comment"
-        },
-        {
-            "id":6,
-            "project":"Test_Project1",
-            "date":"2022-07-12",
-            "words_written":1400,
-            "comment":"comment"
-        }
-    ]
-},
-{
-    "id":1,
-    "name":"Test_Project2",
-    "start_date":"2020-03-09",
-    "deadline":"2023-02-09",
-    "initial_word_count":100,
-    "goal_word_count":100000,
-    "work_entries":[
-        {
-            "id":7,
-            "project":"Test_Project2",
-            "date":"2022-07-09",
-            "words_written":1000,
-            "comment":"comment"
-            }
-    ]
-},
-{
-  "id":2,
-  "name":"Test_Project3",
-  "start_date":"2020-03-09",
-  "deadline":"2023-02-09",
-  "initial_word_count":100,
-  "goal_word_count":100000,
-  "work_entries": []
-}]
-  } else {
-    projects = storedProjects;
-  }
-  //projects.forEach(addProject);
+function importProjectsJson(JsonLump){
+  projects = JsonLump;
   console.log(projects);
+  reloadProjects();
 }
 
 /**
@@ -134,6 +51,13 @@ function clearProjects() {
   $("#project-container").html("");
   $("#auProjectSelect").html("");
   projects = [];
+}
+
+function clearProjectsAndStored() {
+  $("#project-container").html("");
+  $("#auProjectSelect").html("");
+  projects = [];
+  storedProjects = [];
 }
 
 function primaryProjectStatsCalculation(project){
@@ -320,7 +244,7 @@ function findNewId(projects){
 function reloadProjects() {
   storedProjects = projects;
   clearProjects();
-  //importProjectsJson();
+  projects = storedProjects;
   // Add new cards.
   projects.forEach(addProject);
   //});
@@ -345,8 +269,8 @@ $("#apModalForm").on("submit", () => {
 // Clear the add update form whenever the modal is hidden.
 $("#addUpdate").on("hidden.bs.modal", () => $("#auModalForm")[0].reset());
 
-// Clear the add update form whenever the modal is hidden.
-$("#openJsonFile").on("hidden.bs.modal", () => $("#openJsonFile")[0].reset());
+// Clear the add openJson form whenever the modal is hidden.
+$("#openJsonFile").on("hidden.bs.modal", () => $("#openJsonFileForm")[0].reset());
 
 // Set a submit handler for the add update modal.
 $("#auModalForm").on("submit", () => {
@@ -589,25 +513,20 @@ $("#exportData").on("click", () => {
   }
 });
 
-$("#openJsonFile").on("submit", () => {
-  //console.log("Attempting open file");
-  //console.log(document.getElementById("ojfFilePath").files[0]);
-  //document.getElementById("ojfFilePath").addEventListener("change", function() {
-    var file_to_read = document.getElementById("ojfFilePath").files[0];
-    var fileread = new FileReader();
-    fileread.onload = function(e) {
-      var content = e.target.result;
-      //console.log(JSON.parse(content));
-      projects = JSON.parse(content); // Array of Objects.
-      //console.log(intern); // You can index every object
-      //projects = intern;
-      console.log(projects);
-      
-    };
-    fileread.readAsText(file_to_read);
-  //});
-  //console.log("Attempt done.");
-  //importProjectsJson();
-  reloadProjects();
-  
-});
+
+function readJsonFile(){
+  const fileSelector = document.getElementById('file-selector');
+  let testfile = fileSelector.files[0];
+  let fileReader = new FileReader();
+  fileReader.readAsText(testfile);
+  fileReader.onloadend = function() {
+    let hank = JSON.parse(fileReader.result);
+    console.log(hank);
+    $("#openJsonFile").modal("hide");
+    clearProjectsAndStored();
+    importProjectsJson(hank);
+  };
+  fileReader.onerror = function() {
+    console.log(fileReader.error);
+  }; 
+};
