@@ -17,6 +17,7 @@
       integrity="sha512-vBmx0N/uQOXznm/Nbkp7h0P1RfLSj0HQrFSzV8m7rOGyj30fYAOKHYvCNez+yM8IrfnW0TCodDEjRqf6fodf/Q=="
       crossorigin="anonymous">
     </script>
+
     <title>Wryt.io</title>
   </head>
 
@@ -24,13 +25,25 @@
     <nav class="navbar sticky-top navbar-dark bg-success">
       <a class="navbar-brand dark" href="#"><i class="fa fa-pencil-square" aria-hidden="true"></i> Wryt.io</a>
       <div class="btn-group" role="group" aria-label="Basic example">
-        <button type="button" class="btn btn-secondary" id="login" title="Log In">
+        <!-- <button type="button" class="btn btn-secondary" id="login" title="Log In">
             <i class="fa fa-sign-in-alt" aria-hidden="true"></i> Log In
-        </button>
+        </button> -->
       </div>
     </nav>
-    <div class="container mt-4">
+    <noscript><div class="container mt-4">
+      <!-- Row for Avg Graph-->
+      <div class="row row-cols-12">
+        <div class="col">
+          <div id="noscript-error">
+            <div class="alert alert-danger" role="alert">
+              <div class="error-text">Error: Javascript is disabled; </br> Javascript is required for this website to function - please enable Javascript.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div></noscript>
 
+    <div class="container mt-4">
       <!-- Row for Avg Graph-->
       <div class="row row-cols-12">
         <div class="col">
@@ -38,7 +51,7 @@
           </div>
         </div>
       </div>
-      <div class="row row-cols-12">
+      <div id="content" class="row row-cols-12">
         <div class="col mb-4">
           <div class="card">
             <div class="card-header text-center text-success"><h2><i class="fa fa-pencil-square" aria-hidden="true"></i> Wryt.io</h2></div>
@@ -49,7 +62,9 @@
             <div class="text-justify">Tracking projects and keeping yourself accountable for writing often and at length is hard enough with one project, let alone several. That's why <span class="success">wryt.io</span> is here to help by letting you track all your projects in one place along with a <span class="text-success">cross-project</span> view of how often and how much you've been writing. Because the writing is the important part, tracking your words in a spreadsheet is definitely not.</div>
             </br>
             </br>
-            <button type="button" class="btn btn-success" id="signup" title="Sign Up">Sign Up</button>
+            <!-- <button type="button" class="btn btn-success" id="signup" title="Sign Up">Sign Up</button> -->
+            <button type="button" class="btn btn-success" id="getstarted" title="Get Started" onClick="location.href='projects.html'">Get Started</button>
+            &nbsp;
             <button type="button" class="btn btn-secondary" id="faq" title="FAQ" data-toggle="modal" data-target="#faqModal">FAQ</button>
             </div>
           </div>
@@ -158,13 +173,14 @@
 
             </div>
 
-
-
           </div>
 
         </div>
       </div>
     </div>
+
+
+
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
