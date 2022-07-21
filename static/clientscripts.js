@@ -530,3 +530,39 @@ function readJsonFile(){
     console.log(fileReader.error);
   }; 
 };
+
+// Toggle theme and theme button settings using themeToggleDark and themeToggleLight functions.
+function themeToggle(){
+  let togIcon = document.getElementById("toggleIcon");
+  if (togIcon.classList.contains("fa-moon")){
+    themeToggleDark();
+  } else {
+    themeToggleLight();
+  }
+}
+
+// Switch theme to dark, update icon and text of switch button to indicate switching to light.
+function themeToggleDark(){
+  let togIcon = document.getElementById("toggleIcon");
+  let themeSwitch = document.getElementById("themeSwitch");
+  let themeSheetDark = document.getElementById("themeStylesheetDark");
+  let themeSheetLight = document.getElementById("themeStylesheetLight");
+  themeSheetDark.rel="stylesheet";
+  themeSheetLight.rel="preload";
+  togIcon.classList.add("fa-sun");
+  togIcon.classList.remove("fa-moon");
+  themeSwitch.title = "Light Mode";
+}
+
+// Switch theme to dark, update icon and text of switch button to indicate switching to dark.
+function themeToggleLight(){
+  let togIcon = document.getElementById("toggleIcon");
+  let themeSwitch = document.getElementById("themeSwitch");
+  let themeSheetDark = document.getElementById("themeStylesheetDark");
+  let themeSheetLight = document.getElementById("themeStylesheetLight");
+  themeSheetDark.rel="preload";
+  themeSheetLight.rel="stylesheet";
+  togIcon.classList.add("fa-moon");
+  togIcon.classList.remove("fa-sun");
+  themeSwitch.title = "Dark Mode";
+}
