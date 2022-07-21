@@ -38,6 +38,11 @@ function erase() {
   }
 }
 
+// window.onload = function() {
+//   document.getElementById('noscript-error').style.display = "none";
+//   document.getElementById('content').style.display = "inline";
+// }
+
 document.addEventListener("DOMContentLoaded", function() { // On DOM Load initiate the effect
   if(textArray.length) setTimeout(type, newTextDelay + 250);
 });
