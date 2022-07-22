@@ -24,7 +24,6 @@ body {
 }
 .container p span.typed-text {
   font-weight: normal;
-  color: #dd7732;
 }
 .container p span.cursor {
   display: inline-block;

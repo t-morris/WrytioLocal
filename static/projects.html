@@ -6,8 +6,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" id="themeStylesheetDark" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/darkly/bootstrap.min.css" integrity="sha384-nNK9n28pDUDDgIiIqZ/MiyO3F4/9vsMtReZK39klb/MtkZI3/LtjSjlmyVPS3KdN" crossorigin="anonymous">
-    <link rel="preload" id="themeStylesheetLight" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/flatly/bootstrap.min.css" integrity="sha384-qF/QmIAj5ZaYFAeQcrQ6bfVMAh4zZlrGwTPY7T/M+iTTLJqJBJjwwnsE5Y0mV7QK" crossorigin="anonymous">
+    <link rel="preload" id="themeStylesheetDark" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/darkly/bootstrap.min.css" integrity="sha384-nNK9n28pDUDDgIiIqZ/MiyO3F4/9vsMtReZK39klb/MtkZI3/LtjSjlmyVPS3KdN" crossorigin="anonymous">
+    <link rel="stylesheet" id="themeStylesheetLight" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/flatly/bootstrap.min.css" integrity="sha384-qF/QmIAj5ZaYFAeQcrQ6bfVMAh4zZlrGwTPY7T/M+iTTLJqJBJjwwnsE5Y0mV7QK" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css"
       integrity="sha512-/zs32ZEJh+/EO2N1b0PEdoA10JkdC3zJ8L5FTiQu82LR9S/rOQNfQN7U59U9BC12swNeRAz3HSzIL2vpp4fv3w=="
       crossorigin="anonymous" />
@@ -35,12 +35,9 @@
   </head>
 
   <body>
-    <nav class="navbar sticky-top navbar-dark bg-success">
+    <nav class="navbar sticky-top navbar-dark main-light-bg3 main-bg-color">
       <a class="navbar-brand dark" href="#"><i class="fa fa-pencil-square" aria-hidden="true"></i> Wryt.io</a>
       <div class="btn-group" role="group" aria-label="Basic example">
-        <button type="button" class="btn btn-secondary" id="themeSwitch" title="Light Mode" onclick="themeToggle()">
-          <i class="fa fa-sun" id="toggleIcon" aria-hidden="true"></i>
-        </button>
         <button type="button" class="btn btn-secondary" title="Import Data" data-toggle="modal" data-target="#openJsonFile">
           <i class="fa fa-upload" aria-hidden="true"></i>
         </button>
@@ -52,6 +49,9 @@
         </button>
         <button type="button" class="btn btn-secondary" id="exportData" title="Export Data">
           <i class="fa fa-download" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="btn btn-secondary" id="SettingsButton" title="Settings" data-toggle="modal" data-target="#setModal">
+          <i class="fa fa-gear" id="colorIcon" aria-hidden="true"></i>
         </button>
       </div>
     </nav>
@@ -78,7 +78,7 @@
       <div class="row row-cols-12">
         <div class="col mb-4">
           <div class="card">
-            <div class="card-header text-center text-success"><h4>Cross-Project Count</h4></div>
+            <div class="card-header text-center main-light-text3"><h4>Cross-Project Count</h4></div>
             <canvas id="overall-activity" class="chart"></canvas>
             <div class="card-body text-center">
             </div>
@@ -133,7 +133,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-              <input type="submit" class="btn btn-success" id="auSaveUpdate" value="Save"/>
+              <input type="submit" class="btn main-bg-color" id="auSaveUpdate" value="Save"/>
             </div>
           </form>
         </div>
@@ -206,7 +206,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-              <input type="submit" class="btn btn-success" id="auSaveUpdate" value="Save"/>
+              <input type="submit" class="btn main-bg-color" id="auSaveUpdate" value="Save"/>
             </div>
           </form>
         </div>
@@ -233,8 +233,43 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-              <input type="submit" class="btn btn-success" id="ojfOpen" value="Open" onclick="readJsonFile()"/>
+              <input type="submit" class="btn main-bg-color" id="ojfOpen" value="Open" onclick="readJsonFile()"/>
             </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="setModal" tabindex="-1" role="dialog" aria-labelledby="setModal" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="setModal">Settings</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form id="setModalForm">
+            <div class="modal-body">
+              <div class="input-group mb-3">
+                <div class="btn-group" role="group" aria-label="Light/Dark Mode">
+                  <button type="button" class="btn btn-secondary" onclick="themeToggleLight()"><i class="fa fa-sun" id="toggleIcon" aria-hidden="true"></i>&nbsp&nbspLight</button>
+                  <button type="button" class="btn btn-secondary" onclick="themeToggleDark()"><i class="fa fa-moon" id="toggleIcon" aria-hidden="true"></i>&nbsp&nbspDark</button>
+                </div>
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Accent Color:</span>
+                </div>
+                <input type="color" class="form-control form-control-color btn-secondary input-group-append" id="setColorInput" value="#563d7c" title="Choose your color">
+              </div>
+
+              <button type="button" class="btn btn-secondary" onclick="defaultTheme()">Defaults</button>
+              </div>
+            <!-- <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+              <input type="submit" class="btn main-bg-color" id="setApply" value="Apply"/>
+            </div> -->
           </form>
         </div>
       </div>

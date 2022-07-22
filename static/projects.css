@@ -1,12 +1,28 @@
+:root {
+    --text_var: #8ABC50;
+    --bg_var: #8ABC50;
+}
+
+.main-text-color {
+    color: var(--text_var);
+}
+
+.main-bg-color {
+    background-color: var(--bg_var);
+}
+
 canvas.chart {
     padding: 10px;
 }
+
 .progress-text {
     position: absolute;
     display: block;
     width: 100%;
     color: black;
+
 }
 .progress {
     position: relative;
 }
+
