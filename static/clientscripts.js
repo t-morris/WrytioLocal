@@ -35,7 +35,10 @@ function resetAddProjectForm(){
     .css("display", "none");
 }
 
-let projects = [];
+let projects = [{
+  "theme": 0,
+  "colorise":0
+  }];
 let storedProjects =[];
 
 function importProjectsJson(JsonLump){
@@ -85,7 +88,7 @@ function populateOpenProject(project) {
       <hr>
       <h5>Project Stats</h5>
       <div class="progress">
-        <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar progress-bar-striped main-bg-color progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100">
           <span class="progress-text"></span>
         </div>
       </div>
@@ -193,7 +196,7 @@ function addProject(project) {
         </div>
         <div class="card-footer">
           <div class="progress">
-            <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar"
+            <div class="progress-bar progress-bar-striped main-bg-color progress-bar-animated" role="progressbar"
                 aria-valuemin="0" aria-valuemax="100">
               <span class="progress-text"></span>
             </div>
@@ -532,37 +535,60 @@ function readJsonFile(){
 };
 
 // Toggle theme and theme button settings using themeToggleDark and themeToggleLight functions.
-function themeToggle(){
-  let togIcon = document.getElementById("toggleIcon");
-  if (togIcon.classList.contains("fa-moon")){
-    themeToggleDark();
-  } else {
-    themeToggleLight();
-  }
-}
+// function themeToggle(){
+//   let togIcon = document.getElementById("toggleIcon");
+//   if (togIcon.classList.contains("fa-moon")){
+//     themeToggleDark();
+//   } else {
+//     themeToggleLight();
+//   }
+// }
 
 // Switch theme to dark, update icon and text of switch button to indicate switching to light.
 function themeToggleDark(){
-  let togIcon = document.getElementById("toggleIcon");
-  let themeSwitch = document.getElementById("themeSwitch");
+  projects[0].theme = 0;
+  // let togIcon = document.getElementById("toggleIcon");
+  // let themeSwitch = document.getElementById("themeSwitch");
   let themeSheetDark = document.getElementById("themeStylesheetDark");
   let themeSheetLight = document.getElementById("themeStylesheetLight");
   themeSheetDark.rel="stylesheet";
   themeSheetLight.rel="preload";
-  togIcon.classList.add("fa-sun");
-  togIcon.classList.remove("fa-moon");
-  themeSwitch.title = "Light Mode";
+  // togIcon.classList.add("fa-sun");
+  // togIcon.classList.remove("fa-moon");
+  // themeSwitch.title = "Light Mode";
+  //colorSwitchThemeMatch();
 }
 
 // Switch theme to dark, update icon and text of switch button to indicate switching to dark.
 function themeToggleLight(){
-  let togIcon = document.getElementById("toggleIcon");
-  let themeSwitch = document.getElementById("themeSwitch");
+  projects[0].theme = 1;
+  // let togIcon = document.getElementById("toggleIcon");
+  // let themeSwitch = document.getElementById("themeSwitch");
   let themeSheetDark = document.getElementById("themeStylesheetDark");
   let themeSheetLight = document.getElementById("themeStylesheetLight");
   themeSheetDark.rel="preload";
   themeSheetLight.rel="stylesheet";
-  togIcon.classList.add("fa-moon");
-  togIcon.classList.remove("fa-sun");
-  themeSwitch.title = "Dark Mode";
+  // togIcon.classList.add("fa-moon");
+  // togIcon.classList.remove("fa-sun");
+  // themeSwitch.title = "Dark Mode";
+  //colorSwitchThemeMatch();
+}
+
+$("#setColorInput").on("input", () => {
+  var r = document.querySelector(':root');
+  //let number = selection;
+  //let valr = getComputedStyle(r).getPropertyValue('--text_var');
+  let desiredColor = $("#setColorInput").val()
+  //let desiredColor = document.getElementById('setColorInput').val()
+  r.style.setProperty('--text_var', desiredColor);
+  r.style.setProperty('--bg_var', desiredColor);
+  projects[0].colorise = desiredColor;
+});
+
+function defaultTheme() {
+  themeToggleLight();
+  var r = document.querySelector(':root');
+  r.style.setProperty('--text_var', '#8ABC50');
+  r.style.setProperty('--bg_var', '#8ABC50');
+  document.getElementById("setColorInput").value = '#8ABC50';
 }
