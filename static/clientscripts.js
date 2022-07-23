@@ -1,3 +1,138 @@
+//Vars
+// ------------
+let userdata = [{
+  "theme": null,
+  "colorise": null,
+  "projects":[]
+  }];
+let storedUserdata =[];
+let charts = new Map();
+
+//Data Importing
+// ------------
+function readJsonFile(){
+  const fileSelector = document.getElementById('file-selector');
+  let testfile = fileSelector.files[0];
+  let fileReader = new FileReader();
+  fileReader.readAsText(testfile);
+  fileReader.onloadend = function() {
+    let hank = JSON.parse(fileReader.result);
+    // console.log(hank);
+    $("#openJsonFile").modal("hide");
+    // console.log("closed modal");
+    clearProjectsAndStored();
+    // console.log("clear projects and stored");
+    importProjectsJson(hank);
+    // console.log("import" + hank);
+    importTheme();
+    // console.log("theme imported");
+  };
+  fileReader.onerror = function() {
+    console.log(fileReader.error);
+  }; 
+};
+
+function importProjectsJson(JsonLump){
+  userdata = JsonLump;
+  // console.log(userdata);
+  reloadProjects();
+}
+
+function importTheme(){
+  let desiredColor = userdata[0].colorise;
+  // console.log(desiredColor);
+  var r = document.querySelector(':root');
+  r.style.setProperty('--text_var', desiredColor);
+  r.style.setProperty('--bg_var', desiredColor);
+  if (userdata[0].theme == 0){
+    themeToggleDark();
+  } else {
+    themeToggleLight();
+  }
+  reloadProjects();
+}
+
+function hideShowGetStarted() {
+  if (userdata[0].projects.length == 0){
+    $("#crossproject").html("");
+    $("#crossproject").html(`<div class="card">
+    <div class="card-body text-center">
+      You've got no projects yet, add a project and entries using the <i class="fa fa-plus-circle" aria-hidden="true"></i> and <i class="fa fa-calendar-plus-o" aria-hidden="true"></i> controls in the top left, or <i class="fa fa-upload" aria-hidden="true"></i> import a .json file you already have.
+    </div>
+  </div>`);
+  } else {
+    $("#crossproject").html("");
+    $("#crossproject").html(`<div class="card">
+    <div class="card-header text-center main-light-text3"><h4>Cross-Project Count</h4></div>
+    <div class="card-body text-center">
+      <canvas id="overall-activity" class="chart"></canvas>
+    </div>
+  </div>`);
+    
+  }
+}
+
+$(document).ready( function () {
+  hideShowGetStarted();
+});
+
+//Theme Functions
+// ------------
+function defaultTheme() {
+  themeToggleLight();
+  var r = document.querySelector(':root');
+  r.style.setProperty('--text_var', '#8ABC50');
+  r.style.setProperty('--bg_var', '#8ABC50');
+  document.getElementById("setColorInput").value = '#8ABC50';
+}
+// Switch theme to dark, update icon and text of switch button to indicate switching to light.
+function themeToggleDark(){
+  userdata[0].theme = 0;
+  let themeSheetDark = document.getElementById("themeStylesheetDark");
+  let themeSheetLight = document.getElementById("themeStylesheetLight");
+  themeSheetDark.rel="stylesheet";
+  themeSheetLight.rel="preload";
+}
+
+// Switch theme to dark, update icon and text of switch button to indicate switching to dark.
+function themeToggleLight(){
+  userdata[0].theme = 1;
+  let themeSheetDark = document.getElementById("themeStylesheetDark");
+  let themeSheetLight = document.getElementById("themeStylesheetLight");
+  themeSheetDark.rel="preload";
+  themeSheetLight.rel="stylesheet";
+}
+
+$("#setColorInput").on("input", () => {
+  var r = document.querySelector(':root');
+  let desiredColor = $("#setColorInput").val()
+  r.style.setProperty('--text_var', desiredColor);
+  r.style.setProperty('--bg_var', desiredColor);
+  userdata[0].colorise = desiredColor;
+  reloadProjects();
+});
+
+//Clear and Reload Page
+// ------------
+//Remove all projects on the page added by addProject().
+function clearProjects() {
+  $("#project-container").html("");
+  $("#auProjectSelect").html("");
+  userdata = [];
+  $("#canvasdiv").html("");
+  $("#canvasdiv").html('<canvas id="overall-activity" class="chart"></canvas>');
+}
+
+function clearProjectsAndStored() {
+  $("#project-container").html("");
+  $("#auProjectSelect").html("");
+  userdata = [];
+  storedProjects = [];
+}
+
+//Data Manipulation
+// ------------
+
 /*Script to auto calculate the words per day for the Add project modal.
 Collect information from modal form and calculate words per day based
 on remaining words/number of days. Note: dates are collected from field's \
@@ -35,40 +170,12 @@ function resetAddProjectForm(){
     .css("display", "none");
 }
 
-let projects = [{
-  "theme": 0,
-  "colorise":0
-  }];
-let storedProjects =[];
-
-function importProjectsJson(JsonLump){
-  projects = JsonLump;
-  console.log(projects);
-  reloadProjects();
-}
-
-/**
- * Remove all projects on the page added by addProject().
- */
-function clearProjects() {
-  $("#project-container").html("");
-  $("#auProjectSelect").html("");
-  projects = [];
-}
-
-function clearProjectsAndStored() {
-  $("#project-container").html("");
-  $("#auProjectSelect").html("");
-  projects = [];
-  storedProjects = [];
-}
-
 function primaryProjectStatsCalculation(project){
   let workEntryWords = project.work_entries.map(entry => entry.words_written).reduce((a, b) => a + b, 0);
   let currentWords = project.initial_word_count + workEntryWords;
-  console.log("initial:" + project.initial_word_count + ", workentrytotal:" + workEntryWords + ", current:" + currentWords);
-  console.log(typeof(workEntryWords));
-  console.log(typeof(project.initial_word_count));
+  // console.log("initial:" + project.initial_word_count + ", workentrytotal:" + workEntryWords + ", current:" + currentWords);
+  // console.log(typeof(workEntryWords));
+  // console.log(typeof(project.initial_word_count));
   let totalWords = project.goal_word_count;
   let progress = Math.floor((100 * currentWords) / totalWords);
   return {workEntryWords: workEntryWords, currentWords: currentWords, totalWords: totalWords, progress: progress};
@@ -178,10 +285,8 @@ function populateOpenProject(project) {
   $("#openprojectmodal").html("").append(modal);
 }
 
-/**
- * Add a project to the list of project cards on the page.
- * @param {*} project The project structured returned by the API.
- */
+//Add a project to the list of project cards on the page.
+//@param {*} project The project structured returned by the API.
 function addProject(project) {
   // Add this project to the global list.
   //projects.push(project);
@@ -190,10 +295,12 @@ function addProject(project) {
   let card = $(`<div class="col col-12 col-md-6 col-lg-4 mb-4">
       <div class="card h-100">
         <a class="card-link stretched-link text-decoration-none" data-toggle="modal" data-target="#openProject" >
-        <canvas class="chart"></canvas>
+        
         <div class="card-body">
           <h5 class="card-title"></h5>
+          <canvas class="chart"></canvas>
         </div>
+
         <div class="card-footer">
           <div class="progress">
             <div class="progress-bar progress-bar-striped main-bg-color progress-bar-animated" role="progressbar"
@@ -229,13 +336,14 @@ function addProject(project) {
   $("#auProjectSelect").append(option);
 
   // Update the overall graph to include work logs from this project
-  let allWorkEntries = projects.map(project => project.work_entries).flat();
+  let allWorkEntries = userdata[0].projects.map(project => project.work_entries).flat();
   drawWordCountGraph($("#overall-activity")[0], allWorkEntries, null);
 }
 
-function findNewId(projects){
+function findNewId(projID){
+  let pID = projID
   let newID = 1;
-  projects.forEach(entry => {
+  userdata[0].projects[pID].work_entries.forEach(entry => {
     if (entry.id > newID){
       newID = entry.id;
     }
@@ -245,17 +353,29 @@ function findNewId(projects){
 }
 
 function reloadProjects() {
-  storedProjects = projects;
+  if (userdata[0].projects.length == 0){
+    $("#crossproject").html("");
+    $("#getstarted").html(`<div class="card-body text-center" >
+    You've got no projects yet, add a project and entries using the <i class="fa fa-plus-circle" aria-hidden="true"></i> and <i class="fa fa-calendar-plus-o" aria-hidden="true"></i> controls in the top left, or <i class="fa fa-upload" aria-hidden="true"></i> import a .json file you already have.
+  </div>`);
+  } else {
+    $("#crossproject").html(`<div class="card-header text-center main-light-text3"><h4>Cross-Project Count</h4></div>
+    <div id="canvasdiv" class="card-body text-center">
+      <canvas id="overall-activity" class="chart"></canvas>
+    </div>`);
+    $("#getstarted").html("");
+  }
+  storedUserdata = userdata;
   clearProjects();
-  projects = storedProjects;
+  userdata = storedUserdata;
   // Add new cards.
-  projects.forEach(addProject);
+  userdata[0].projects.forEach(addProject);
   //});
 }
 
 $("#apModalForm").on("submit", () => {
-  projects.push({
-    "id": findNewId(projects),
+  userdata[0].projects.push({
+    "id": findNewId(userdata),
     "name": $("#apTitleInput").val(),
     "start_date": $("#apStartDateInput").val(),
     "deadline": $("#apDeadlineInput").val(),
@@ -269,12 +389,6 @@ $("#apModalForm").on("submit", () => {
   return false;
 });
 
-// Clear the add update form whenever the modal is hidden.
-$("#addUpdate").on("hidden.bs.modal", () => $("#auModalForm")[0].reset());
-
-// Clear the add openJson form whenever the modal is hidden.
-$("#openJsonFile").on("hidden.bs.modal", () => $("#openJsonFileForm")[0].reset());
-
 // Set a submit handler for the add update modal.
 $("#auModalForm").on("submit", () => {
   let projectID = parseInt($("#auProjectSelect").val());
@@ -284,9 +398,9 @@ $("#auModalForm").on("submit", () => {
       .text(`Failed to log work: No project selected`)
       .css("display", "block");
   }
-  projects[projectID].work_entries.push({
-    "id": findNewId(projects[projectID].work_entries),
-    "project": projects[projectID].name,
+  userdata[0].projects[projectID].work_entries.push({
+    "id": findNewId(projectID),
+    "project": userdata[0].projects[projectID].name,
     "date": $("#auDateInput").val(),
     "words_written": parseInt($("#auWordsWritten").val()),
     "comment": $("#auCommentsInput").val(),
@@ -296,8 +410,6 @@ $("#auModalForm").on("submit", () => {
   // Prevent page reload.
   return false;
 });
-
-let charts = new Map();
 
 function drawWordCountGraph(element, workEntries, project) {
   let now = new Date();
@@ -387,7 +499,7 @@ function drawWordCountGraph(element, workEntries, project) {
     let currentDay = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
     let currNeg30 = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate() - (29)));
     let count4AvgTotal = 0
-    projects.forEach(entry => {
+    userdata[0].projects.forEach(entry => {
       workEntries.forEach(entry => {
         let ent = new Date(entry.date);
         let entDate = new Date(Date.UTC(ent.getFullYear(), ent.getMonth(), ent.getDate()));
@@ -412,14 +524,18 @@ function drawWordCountGraph(element, workEntries, project) {
   if (charts.has(element)) {
     charts.get(element).destroy();
   }
-
+  //Get latest colour from navbar.
+  let elements = document.getElementById('navbar');
+  let style = window.getComputedStyle(elements);
+  let barColor = style.backgroundColor;
+  // console.log(barColor);
   let myChart = new Chart(element, {
     type: 'bar',
     data: {
       datasets: [{
         label: 'Written',
         data: data,
-        backgroundColor: '#26c69d',
+        backgroundColor: barColor,
         type: 'bar',
         order: 2
       },{
@@ -485,13 +601,23 @@ function drawWordCountGraph(element, workEntries, project) {
   charts.set(element, myChart);
 }
 
+//Form Cleaning
+// ------------
+// Clear the add update form whenever the modal is hidden.
+$("#addUpdate").on("hidden.bs.modal", () => $("#auModalForm")[0].reset());
+
+// Clear the add openJson form whenever the modal is hidden.
+$("#openJsonFile").on("hidden.bs.modal", () => $("#openJsonFileForm")[0].reset());
+
+//Data Export
+// ------------
 $("#exportData").on("click", () => {
   try{
     reloadProjects();
     // Based on code from here: https://robkendal.co.uk/blog/2020-04-17-saving-text-to-client-side-file-using-vanilla-js
     // Create blob which contains the JSON file.
-    const projectJson = JSON.stringify(projects);
-    console.log(projectJson);
+    const projectJson = JSON.stringify(userdata);
+    // console.log(projectJson);
     const file = new Blob([projectJson], {type: "application/json"});
     // Build a fake link tag and "click" it.
     const a = document.createElement('a');
@@ -515,80 +641,3 @@ $("#exportData").on("click", () => {
     $("#main-error .error-text").text("Failed to generate export data.");
   }
 });
-
-
-function readJsonFile(){
-  const fileSelector = document.getElementById('file-selector');
-  let testfile = fileSelector.files[0];
-  let fileReader = new FileReader();
-  fileReader.readAsText(testfile);
-  fileReader.onloadend = function() {
-    let hank = JSON.parse(fileReader.result);
-    console.log(hank);
-    $("#openJsonFile").modal("hide");
-    clearProjectsAndStored();
-    importProjectsJson(hank);
-  };
-  fileReader.onerror = function() {
-    console.log(fileReader.error);
-  }; 
-};
-
-// Toggle theme and theme button settings using themeToggleDark and themeToggleLight functions.
-// function themeToggle(){
-//   let togIcon = document.getElementById("toggleIcon");
-//   if (togIcon.classList.contains("fa-moon")){
-//     themeToggleDark();
-//   } else {
-//     themeToggleLight();
-//   }
-// }
-
-// Switch theme to dark, update icon and text of switch button to indicate switching to light.
-function themeToggleDark(){
-  projects[0].theme = 0;
-  // let togIcon = document.getElementById("toggleIcon");
-  // let themeSwitch = document.getElementById("themeSwitch");
-  let themeSheetDark = document.getElementById("themeStylesheetDark");
-  let themeSheetLight = document.getElementById("themeStylesheetLight");
-  themeSheetDark.rel="stylesheet";
-  themeSheetLight.rel="preload";
-  // togIcon.classList.add("fa-sun");
-  // togIcon.classList.remove("fa-moon");
-  // themeSwitch.title = "Light Mode";
-  //colorSwitchThemeMatch();
-}
-
-// Switch theme to dark, update icon and text of switch button to indicate switching to dark.
-function themeToggleLight(){
-  projects[0].theme = 1;
-  // let togIcon = document.getElementById("toggleIcon");
-  // let themeSwitch = document.getElementById("themeSwitch");
-  let themeSheetDark = document.getElementById("themeStylesheetDark");
-  let themeSheetLight = document.getElementById("themeStylesheetLight");
-  themeSheetDark.rel="preload";
-  themeSheetLight.rel="stylesheet";
-  // togIcon.classList.add("fa-moon");
-  // togIcon.classList.remove("fa-sun");
-  // themeSwitch.title = "Dark Mode";
-  //colorSwitchThemeMatch();
-}
-
-$("#setColorInput").on("input", () => {
-  var r = document.querySelector(':root');
-  //let number = selection;
-  //let valr = getComputedStyle(r).getPropertyValue('--text_var');
-  let desiredColor = $("#setColorInput").val()
-  //let desiredColor = document.getElementById('setColorInput').val()
-  r.style.setProperty('--text_var', desiredColor);
-  r.style.setProperty('--bg_var', desiredColor);
-  projects[0].colorise = desiredColor;
-});
-
-function defaultTheme() {
-  themeToggleLight();
-  var r = document.querySelector(':root');
-  r.style.setProperty('--text_var', '#8ABC50');
-  r.style.setProperty('--bg_var', '#8ABC50');
-  document.getElementById("setColorInput").value = '#8ABC50';
-}

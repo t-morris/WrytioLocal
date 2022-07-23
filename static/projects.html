@@ -35,7 +35,7 @@
   </head>
 
   <body>
-    <nav class="navbar sticky-top navbar-dark main-light-bg3 main-bg-color">
+    <nav id="navbar" class="navbar sticky-top navbar-dark main-light-bg3 main-bg-color">
       <a class="navbar-brand dark" href="#"><i class="fa fa-pencil-square" aria-hidden="true"></i> Wryt.io</a>
       <div class="btn-group" role="group" aria-label="Basic example">
         <button type="button" class="btn btn-secondary" title="Import Data" data-toggle="modal" data-target="#openJsonFile">
@@ -76,13 +76,8 @@
         </div>
       </div>
       <div class="row row-cols-12">
-        <div class="col mb-4">
-          <div class="card">
-            <div class="card-header text-center main-light-text3"><h4>Cross-Project Count</h4></div>
-            <canvas id="overall-activity" class="chart"></canvas>
-            <div class="card-body text-center">
-            </div>
-          </div>
+        <div id="crossproject" class="col mb-4">
+          <!--Spacer for Cross Project Graph / Get Started instructions-->
         </div>
       </div>
       <!-- Row for Project Cards-->
