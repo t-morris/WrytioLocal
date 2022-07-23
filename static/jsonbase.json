@@ -1,82 +1,85 @@
     [{
     "theme": 0,
-    "colorise":0
-    },        
-    {   
-    "id":0,
-    "name":"Test_Project1",
-    "start_date":"2020-03-09",
-    "deadline":"2023-02-09",
-    "initial_word_count":5000,
-    "goal_word_count":50000,
-    "work_entries":[
-        {
-            "id":0,
-            "project":"Test_Project1",
-            "date":"2022-07-06",
-            "words_written":1000,
-            "comment":"comment"
+    "colorise":"#B90004",
+    "projects":[
+        {   
+        "id":0,
+        "name":"Test_Project1",
+        "start_date":"2020-03-09",
+        "deadline":"2023-02-09",
+        "initial_word_count":5000,
+        "goal_word_count":50000,
+        "work_entries":[
+            {
+                "id":0,
+                "project":"Test_Project1",
+                "date":"2022-07-06",
+                "words_written":1000,
+                "comment":"comment"
+            },
+            {
+                "id":2,
+                "project":"Test_Project1",
+                "date":"2022-07-08",
+                "words_written":1688,
+                "comment":"comment"
+            },
+            {
+                "id":3,
+                "project":"Test_Project1",
+                "date":"2022-07-09",
+                "words_written":2000,
+                "comment":"comment"
+            },
+            {
+                "id":4,
+                "project":"Test_Project1",
+                "date":"2022-07-10",
+                "words_written":10,
+                "comment":"comment"
+            },
+            {
+                "id":5,
+                "project":"Test_Project1",
+                "date":"2022-07-11",
+                "words_written":660,
+                "comment":"comment"
+            },
+            {
+                "id":6,
+                "project":"Test_Project1",
+                "date":"2022-07-12",
+                "words_written":1400,
+                "comment":"comment"
+            }
+        ]
         },
         {
-            "id":2,
-            "project":"Test_Project1",
-            "date":"2022-07-08",
-            "words_written":1688,
-            "comment":"comment"
+        "id":1,
+        "name":"Test_Project2",
+        "start_date":"2020-03-09",
+        "deadline":"2023-02-09",
+        "initial_word_count":100,
+        "goal_word_count":100000,
+        "work_entries":[
+            {
+                "id":7,
+                "project":"Test_Project2",
+                "date":"2022-07-09",
+                "words_written":1000,
+                "comment":"comment"
+                }
+        ]
         },
         {
-            "id":3,
-            "project":"Test_Project1",
-            "date":"2022-07-09",
-            "words_written":2000,
-            "comment":"comment"
-        },
-        {
-            "id":4,
-            "project":"Test_Project1",
-            "date":"2022-07-10",
-            "words_written":10,
-            "comment":"comment"
-        },
-        {
-            "id":5,
-            "project":"Test_Project1",
-            "date":"2022-07-11",
-            "words_written":660,
-            "comment":"comment"
-        },
-        {
-            "id":6,
-            "project":"Test_Project1",
-            "date":"2022-07-12",
-            "words_written":1400,
-            "comment":"comment"
+      "id":2,
+      "name":"Test_Project_Hank",
+      "start_date":"2020-03-09",
+      "deadline":"2023-02-09",
+      "initial_word_count":100,
+      "goal_word_count":100000,
+      "work_entries": []
         }
     ]
-},
-{
-    "id":1,
-    "name":"Test_Project2",
-    "start_date":"2020-03-09",
-    "deadline":"2023-02-09",
-    "initial_word_count":100,
-    "goal_word_count":100000,
-    "work_entries":[
-        {
-            "id":7,
-            "project":"Test_Project2",
-            "date":"2022-07-09",
-            "words_written":1000,
-            "comment":"comment"
-            }
+    }       
     ]
-},
-{
-  "id":2,
-  "name":"Test_Project_Hank",
-  "start_date":"2020-03-09",
-  "deadline":"2023-02-09",
-  "initial_word_count":100,
-  "goal_word_count":100000,
-  "work_entries": []
-}]
