@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="preload" id="themeStylesheetDark" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/darkly/bootstrap.min.css" integrity="sha384-nNK9n28pDUDDgIiIqZ/MiyO3F4/9vsMtReZK39klb/MtkZI3/LtjSjlmyVPS3KdN" crossorigin="anonymous">
+    <link rel="stylesheet" id="themeStylesheetLight" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/flatly/bootstrap.min.css" integrity="sha384-qF/QmIAj5ZaYFAeQcrQ6bfVMAh4zZlrGwTPY7T/M+iTTLJqJBJjwwnsE5Y0mV7QK" crossorigin="anonymous">
+    <link rel="stylesheet" href="wrytio.css"/> 
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://kit.fontawesome.com/f07f77cac5.js" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    
+    <title>Wrytio</title>
+  </head>
+
+  <body>
+    <nav id="navbar" class="navbar sticky-top navbar-dark main-light-bg3 main-bg-color">
+      <a class="navbar-brand dark" href="index.html"><i class="fa fa-pencil-square" aria-hidden="true"></i> Wrytio</a>
+    </nav>
+    <div class="container mt-4">
+      <!-- Row for Avg Graph-->
+      <div class="row row-cols-12">
+        <div class="col">
+          <div id="main-error">
+          </div>
+        </div>
+      </div>
+      <div class="row row-cols-12">
+        <div id="crossproject" class="col mb-4">
+          <div class="card">
+            <div class="card-header text-center main-text-color"><h2><i class="fa fa-pencil-square" aria-hidden="true"></i> Uh-oh.</h2></div>
+            <div class="card-body text-center">
+              </br>
+                <h4><p>Something went wrong,</br>
+                try going back or going <a href="index.html">home</a>.</p></h4>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Row for Project Cards-->
+      <div class="row row-cols-3" id="project-container"></div>
+    </div>
+
+  </body>
+
+</html>

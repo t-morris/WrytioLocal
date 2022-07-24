@@ -1,20 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat');
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-body {
-  font-family: 'Montserrat', sans-serif;
-  background-color: #000;
-  color: #eee;
-}
-.container {
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-}
 .container p {
   padding: 0.5rem;
   font-weight: bold;
@@ -42,3 +27,48 @@ body {
   99% { background-color: transparent; }
   100%  { background-color: #ccc; }
 }
+
+:root {
+    --text_var: #8ABC50;
+    --bg_var: #8ABC50;
+}
+
+.main-text-color {
+    color: var(--text_var);
+}
+
+.main-bg-color {
+    background-color: var(--bg_var);
+}
+
+canvas.chart {
+    padding: 10px;
+}
+
+.progress-text {
+    position: absolute;
+    display: block;
+    width: 100%;
+    color: black;
+
+}
+.progress {
+    position: relative;
+}
+
+a {
+    color: var(--text_var);
+}
+
+a:hover {
+    color: grey;
+}
+
+.btn-link {
+    color: var(--text_var);
+}
+
+.btn-link:hover {
+    color: grey;
+}
+
