@@ -1,3 +1,6 @@
+//Introduction Functions
+// ------------
+
 // As seen on https://codepen.io/Coding_Journey/pen/BEMgbX
 
 const typedTextSpan = document.querySelector(".typed-text");
@@ -52,10 +55,9 @@ let userdata = [{
 let storedUserdata =[];
 let charts = new Map();
 
-//Data Importing
-// ------------
-function readJsonFile(){
-  const fileSelector = document.getElementById('file-selector');
+$("#openJsonFileForm").on("submit", () => {
+  try{
+    const fileSelector = document.getElementById('file-selector');
   let testfile = fileSelector.files[0];
   let fileReader = new FileReader();
   fileReader.readAsText(testfile);
@@ -65,27 +67,35 @@ function readJsonFile(){
     $("#openJsonFile").modal("hide");
     // console.log("closed modal");
     clearProjectsAndStored();
-    // console.log("clear projects and stored");
     importProjectsJson(hank);
-    // console.log("import" + hank);
     importTheme();
-    // console.log("theme imported");
+    reloadProjects();
     hideShowGetStarted();
   };
   fileReader.onerror = function() {
     console.log(fileReader.error);
   }; 
-};
+  }catch{
+    //Throw error if above code block fails.
+    $("#main-error").html(`
+      <div class="alert alert-danger alert-dismissible" role="alert">
+        <div class="error-text"></div>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    `);
+    $("#main-error .error-text").text("Failed to import data.");
+  }
+  return false;
+});
 
 function importProjectsJson(JsonLump){
   userdata = JsonLump;
-  // console.log(userdata);
-  reloadProjects();
 }
 
 function importTheme(){
   let desiredColor = userdata[0].colorise;
-  // console.log(desiredColor);
   var r = document.querySelector(':root');
   r.style.setProperty('--text_var', desiredColor);
   r.style.setProperty('--bg_var', desiredColor);
@@ -94,12 +104,11 @@ function importTheme(){
   } else {
     themeToggleLight();
   }
-  reloadProjects();
 }
 
 function hideShowGetStarted() {
   if (userdata[0].projects.length == 1){
-    $("#crossproject").html("");
+    // $("#crossproject").html("");
     $("#crossproject").html(`
       <div class="card">
         <div class="card-header text-center main-light-text3"><h4>Cross-Project Count</h4></div>
@@ -165,7 +174,7 @@ function clearProjectsAndStored() {
   storedProjects = [];
 }
 
-//Data Manipulation
+//Data Manipulation 
 // ------------
 
 /*Script to auto calculate the words per day for the Add project modal.
@@ -410,16 +419,18 @@ function findNewProjectId(data){
 
 function reloadProjects() {
   if (userdata[0].projects.length == 0){
-    $("#crossproject").html("");
-    $("#getstarted").html(`<div class="card-body text-center" >
+    // $("#crossproject").html("");
+    $("#crossproject").html(`<div class="card-body text-center" >
     You've got no projects yet, add a project and entries using the <i class="fa fa-plus-circle" aria-hidden="true"></i> and <i class="fa fa-calendar-plus-o" aria-hidden="true"></i> controls in the top left, or <i class="fa fa-upload" aria-hidden="true"></i> import a .json file you already have.
   </div>`);
   } else {
-    $("#crossproject").html(`<div class="card-header text-center main-light-text3"><h4>Cross-Project Count</h4></div>
-    <div id="canvasdiv" class="card-body text-center">
+    $("#crossproject").html(`<div class="card">
+    <div class="card-header text-center main-light-text3"><h4>Cross-Project Count</h4></div>
+    <div class="card-body text-center">
       <canvas id="overall-activity" class="chart"></canvas>
-    </div>`);
-    $("#getstarted").html("");
+    </div>
+  </div>`);
+    // $("#crossproject").html("");
   }
   storedUserdata = userdata;
   clearProjects();
