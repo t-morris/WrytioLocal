@@ -1,3 +1,47 @@
+// As seen on https://codepen.io/Coding_Journey/pen/BEMgbX
+
+const typedTextSpan = document.querySelector(".typed-text");
+const cursorSpan = document.querySelector(".cursor");
+
+const textArray = ["writers.", "poets.", "journalists.", "novelists.", "authors.", "songwriters."];
+const typingDelay = 150;
+const erasingDelay = 100;
+const newTextDelay = 2000; // Delay between current and next text
+let textArrayIndex = 0;
+let charIndex = 0;
+
+function type() {
+  if (charIndex < textArray[textArrayIndex].length) {
+    if(!cursorSpan.classList.contains("typing")) cursorSpan.classList.add("typing");
+    typedTextSpan.textContent += textArray[textArrayIndex].charAt(charIndex);
+    charIndex++;
+    setTimeout(type, typingDelay);
+  } 
+  else {
+    cursorSpan.classList.remove("typing");
+  	setTimeout(erase, newTextDelay);
+  }
+}
+
+function erase() {
+	if (charIndex > 0) {
+    if(!cursorSpan.classList.contains("typing")) cursorSpan.classList.add("typing");
+    typedTextSpan.textContent = textArray[textArrayIndex].substring(0, charIndex-1);
+    charIndex--;
+    setTimeout(erase, erasingDelay);
+  } 
+  else {
+    cursorSpan.classList.remove("typing");
+    textArrayIndex++;
+    if(textArrayIndex>=textArray.length) textArrayIndex=0;
+    setTimeout(type, typingDelay + 1100);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", function() { // On DOM Load initiate the effect
+  if(textArray.length) setTimeout(type, newTextDelay + 250);
+});
+
 //Vars
 // ------------
 let userdata = [{
@@ -26,6 +70,7 @@ function readJsonFile(){
     // console.log("import" + hank);
     importTheme();
     // console.log("theme imported");
+    hideShowGetStarted();
   };
   fileReader.onerror = function() {
     console.log(fileReader.error);
@@ -53,28 +98,18 @@ function importTheme(){
 }
 
 function hideShowGetStarted() {
-  if (userdata[0].projects.length == 0){
+  if (userdata[0].projects.length == 1){
     $("#crossproject").html("");
-    $("#crossproject").html(`<div class="card">
-    <div class="card-body text-center">
-      You've got no projects yet, add a project and entries using the <i class="fa fa-plus-circle" aria-hidden="true"></i> and <i class="fa fa-calendar-plus-o" aria-hidden="true"></i> controls in the top left, or <i class="fa fa-upload" aria-hidden="true"></i> import a .json file you already have.
-    </div>
-  </div>`);
-  } else {
-    $("#crossproject").html("");
-    $("#crossproject").html(`<div class="card">
-    <div class="card-header text-center main-light-text3"><h4>Cross-Project Count</h4></div>
-    <div class="card-body text-center">
-      <canvas id="overall-activity" class="chart"></canvas>
-    </div>
-  </div>`);
-    
+    $("#crossproject").html(`
+      <div class="card">
+        <div class="card-header text-center main-light-text3"><h4>Cross-Project Count</h4></div>
+        <div class="card-body text-center">
+          <canvas id="overall-activity" class="chart"></canvas>
+        </div>
+      </div>
+    `); 
   }
 }
-
-$(document).ready( function () {
-  hideShowGetStarted();
-});
 
 //Theme Functions
 // ------------
@@ -340,15 +375,36 @@ function addProject(project) {
   drawWordCountGraph($("#overall-activity")[0], allWorkEntries, null);
 }
 
-function findNewId(projID){
-  let pID = projID
+function findNewEntryId(projID){
+  let pID = projID;
   let newID = 1;
-  userdata[0].projects[pID].work_entries.forEach(entry => {
-    if (entry.id > newID){
-      newID = entry.id;
-    }
-  })
-  newID++;
+  if (userdata[0].projects[pID].work_entries.length == 0) {
+    newID = 0;
+  } else {
+    newID = 1;
+    userdata[0].projects[pID].work_entries.forEach(entry => {
+      if (entry.id > newID){
+        newID = entry.id;
+      }
+    })
+    newID++;
+  return newID;
+  }
+}
+
+function findNewProjectId(data){
+  let newID = 1;
+  if (userdata[0].projects.length == 0) {
+    newID = 0;
+  } else {
+    newID = 0;
+    userdata[0].projects.forEach(entry => {
+      if (entry.id > newID){
+        newID = entry.id;
+      }
+    })
+    newID++;
+  }
   return newID;
 }
 
@@ -375,7 +431,7 @@ function reloadProjects() {
 
 $("#apModalForm").on("submit", () => {
   userdata[0].projects.push({
-    "id": findNewId(userdata),
+    "id": findNewProjectId(userdata),
     "name": $("#apTitleInput").val(),
     "start_date": $("#apStartDateInput").val(),
     "deadline": $("#apDeadlineInput").val(),
@@ -392,14 +448,13 @@ $("#apModalForm").on("submit", () => {
 // Set a submit handler for the add update modal.
 $("#auModalForm").on("submit", () => {
   let projectID = parseInt($("#auProjectSelect").val());
-
   if (projectID == -1) {
     $("#addProjectError")
       .text(`Failed to log work: No project selected`)
       .css("display", "block");
   }
   userdata[0].projects[projectID].work_entries.push({
-    "id": findNewId(projectID),
+    "id": findNewEntryId(projectID),
     "project": userdata[0].projects[projectID].name,
     "date": $("#auDateInput").val(),
     "words_written": parseInt($("#auWordsWritten").val()),
@@ -641,3 +696,5 @@ $("#exportData").on("click", () => {
     $("#main-error .error-text").text("Failed to generate export data.");
   }
 });
+
+

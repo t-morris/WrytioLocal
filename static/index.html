@@ -8,35 +8,23 @@
     <!-- Bootstrap CSS -->
     <link rel="preload" id="themeStylesheetDark" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/darkly/bootstrap.min.css" integrity="sha384-nNK9n28pDUDDgIiIqZ/MiyO3F4/9vsMtReZK39klb/MtkZI3/LtjSjlmyVPS3KdN" crossorigin="anonymous">
     <link rel="stylesheet" id="themeStylesheetLight" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/flatly/bootstrap.min.css" integrity="sha384-qF/QmIAj5ZaYFAeQcrQ6bfVMAh4zZlrGwTPY7T/M+iTTLJqJBJjwwnsE5Y0mV7QK" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css"
-      integrity="sha512-/zs32ZEJh+/EO2N1b0PEdoA10JkdC3zJ8L5FTiQu82LR9S/rOQNfQN7U59U9BC12swNeRAz3HSzIL2vpp4fv3w=="
-      crossorigin="anonymous" />
-    <link rel="stylesheet" href="projects.css" /> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css" integrity="sha512-/zs32ZEJh+/EO2N1b0PEdoA10JkdC3zJ8L5FTiQu82LR9S/rOQNfQN7U59U9BC12swNeRAz3HSzIL2vpp4fv3w==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="wrytio.css"/> 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://kit.fontawesome.com/f07f77cac5.js" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js" integrity="sha512-vBmx0N/uQOXznm/Nbkp7h0P1RfLSj0HQrFSzV8m7rOGyj30fYAOKHYvCNez+yM8IrfnW0TCodDEjRqf6fodf/Q=="
-      crossorigin="anonymous">
-    </script>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"
-      integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
-      crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-      crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-      crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js"
-      integrity="sha512-/n/dTQBO8lHzqqgAQvy0ukBQ0qLmGzxKhn8xKrz4cn7XJkZzy+fAtzjnOQd5w55h4k1kUC+8oIe6WmrGUYwODA=="
-      crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js" integrity="sha512-vBmx0N/uQOXznm/Nbkp7h0P1RfLSj0HQrFSzV8m7rOGyj30fYAOKHYvCNez+yM8IrfnW0TCodDEjRqf6fodf/Q==" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js" integrity="sha512-/n/dTQBO8lHzqqgAQvy0ukBQ0qLmGzxKhn8xKrz4cn7XJkZzy+fAtzjnOQd5w55h4k1kUC+8oIe6WmrGUYwODA==" crossorigin="anonymous"></script>  
     
-    <title>Wryt.io - Projects</title>
+    <title>Wrytio</title>
   </head>
 
   <body>
     <nav id="navbar" class="navbar sticky-top navbar-dark main-light-bg3 main-bg-color">
-      <a class="navbar-brand dark" href="#"><i class="fa fa-pencil-square" aria-hidden="true"></i> Wryt.io</a>
+      <a class="navbar-brand dark" href="#"><i class="fa fa-pencil-square" aria-hidden="true"></i> Wrytio</a>
       <div class="btn-group" role="group" aria-label="Basic example">
         <button type="button" class="btn btn-secondary" title="Import Data" data-toggle="modal" data-target="#openJsonFile">
           <i class="fa fa-upload" aria-hidden="true"></i>
@@ -53,6 +41,7 @@
         <button type="button" class="btn btn-secondary" id="SettingsButton" title="Settings" data-toggle="modal" data-target="#setModal">
           <i class="fa fa-gear" id="colorIcon" aria-hidden="true"></i>
         </button>
+        <button type="button" class="btn btn-secondary" id="faq" title="FAQ" data-toggle="modal" data-target="#faqModal"><i class="fa fa-question"></i></button>
       </div>
     </nav>
     <noscript><div class="container mt-4">
@@ -77,12 +66,24 @@
       </div>
       <div class="row row-cols-12">
         <div id="crossproject" class="col mb-4">
-          <!--Spacer for Cross Project Graph / Get Started instructions-->
+          <div class="card">
+            <div class="card-header text-center main-text-color"><h2><i class="fa fa-pencil-square" aria-hidden="true"></i> Wrytio</h2></div>
+            <div class="card-body text-center">
+              </br>
+              <h3><p>Project word-count tracking for <span class="typed-text main-text-color"></span><span class="cursor">&nbsp;</span></p></h3>
+              </br>
+              <div class="text-justify">Tracking projects and keeping yourself accountable for writing often and at length is hard enough with one project, let alone several. That's why <span class="main-text-color">wrytio</span> is here to help by letting you track all your projects in one place along with a <span class="main-text-color">cross-project</span> view of how often and how much you've been writing. Because the writing is the important part, tracking your words in a spreadsheet is definitely not.</div>
+              </br>
+              </br>
+              </p>To get started add a project and entries using the <i class="fa fa-plus-circle" aria-hidden="true"></i> and <i class="fa fa-calendar-plus-o" aria-hidden="true"></i> controls in the top left, or <i class="fa fa-upload" aria-hidden="true"></i> import a .json file you already have.
+            </div>
+          </div>
         </div>
       </div>
       <!-- Row for Project Cards-->
       <div class="row row-cols-3" id="project-container"></div>
     </div>
+
     <!-- addUpdate Modal -->
     <div class="modal fade" id="addUpdate" tabindex="-1" role="dialog" aria-labelledby="addUpdate" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
@@ -134,6 +135,7 @@
         </div>
       </div>
     </div>
+
     <!-- addProject Modal -->
     <div class="modal fade" id="addProject" tabindex="-1" role="dialog" aria-labelledby="addUpdate" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
@@ -207,6 +209,7 @@
         </div>
       </div>
     </div>
+
     <!-- Open project modal placeholder. -->
     <div id="openprojectmodal"></div>
     
@@ -270,7 +273,107 @@
       </div>
     </div>
 
-    <script src="clientscripts.js"></script>
+    <div class="modal fade" id="faqModal" tabindex="-1" role="dialog" aria-labelledby="faqModal" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="faqModal">Frequently Asked Questions</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="accordion" id="accordionExample">
+
+              <div class="card">
+                <div class="card-header" id="headingA">
+                  <h2 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseA" aria-expanded="false" aria-controls="collapseA">
+                      What's the pricing structure?
+                    </button>
+                  </h2>
+                </div>
+                <div id="collapseA" class="collapse" aria-labelledby="headingA" data-parent="#accordionExample">
+                  <div class="card-body text-center">
+                    <h2><i class="fa fa-money" aria-hidden="true"></i></br></h2>
+                    At the moment, there is none, it's a small, free service.
+                  </div>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-header" id="headingB">
+                  <h2 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseB" aria-expanded="false" aria-controls="collapseB">
+                      Can I export my data?
+                    </button>
+                  </h2>
+                </div>
+                <div id="collapseB" class="collapse" aria-labelledby="headingB" data-parent="#accordionExample">
+                  <div class="card-body text-center">
+                    <h2><i class="fa fa-download" aria-hidden="true"></i></br></h2>
+                    Yes! All data you put into the tracker can be exported as .json file at any time. Currently it cannot be exported as anything else (we plan to in the future) but it will include all of your data.
+                  </div>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-header" id="headingC">
+                  <h2 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseC" aria-expanded="false" aria-controls="collapseC">
+                      What is the Cross-Project graph?
+                    </button>
+                  </h2>
+                </div>
+                <div id="collapseC" class="collapse" aria-labelledby="headingC" data-parent="#accordionExample">
+                  <div class="card-body text-center">
+                    <h2><i class="fa fa-chart-bar" aria-hidden="true"></i></br></h2>
+                    Wryt.io tracks word counts for projects and provides both tracking for the individual project but also a rolling graph of how many words you've written across all of your projects (and an average per day) for the last 30 days.
+                  </div>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-header" id="headingD">
+                  <h2 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseD" aria-expanded="false" aria-controls="collapseD">
+                      Is there dark mode?
+                    </button>
+                  </h2>
+                </div>
+                <div id="collapseD" class="collapse" aria-labelledby="headingD" data-parent="#accordionExample">
+                  <div class="card-body text-center">
+                    <h2><i class="fa fa-sun" aria-hidden="true"></i> <i class="fa fa-moon" aria-hidden="true"></i></br></h2>
+                    Yes. The dark mode switch is in the <i class="fa fa-gear" aria-hidden="true"></i> settings in the navigation bar, it will show either a moon or sun depending on which mode you are in and will save your preference if you're logged in.
+                  </div>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-header" id="headingE">
+                  <h2 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseE" aria-expanded="false" aria-controls="collapseE">
+                      Is there a native app?
+                    </button>
+                  </h2>
+                </div>
+                <div id="collapseE" class="collapse" aria-labelledby="headingE" data-parent="#accordionExample">
+                  <div class="card-body text-center">
+                    <h2><i class="fab fa-google-play" aria-hidden="true"></i> <i class="fab fa-app-store" aria-hidden="true"></i></br></h2>
+                    No, unfortunately we don't have dedicated apps for any platforms outside of the web app here. At present there are no plans to create dedicated apps.
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="wrytio.js"></script>
 
   </body>
 
